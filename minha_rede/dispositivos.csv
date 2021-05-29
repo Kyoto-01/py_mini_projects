@@ -1,0 +1,5 @@
+PC Casa,192.168.1.2,Windows 10,PC geral da família
+PC Trabalho,192.168.1.3,Linux Debian,PC do escritório
+Notegames,192.168.1.4,Windows 10,Notebook apenas para jogos
+Weserver,192.168.1.254,Ubuntu Server,Servidor geral da rede local
+meu cel,192.168.1.5,Android,Meu celular pessoal
