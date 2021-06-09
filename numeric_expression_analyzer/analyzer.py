@@ -1,6 +1,24 @@
 from re import sub
 
 
+def format_exp(exp: str) -> str:
+    formated = sub(r'[^\d\.\+\-\*\/$]', r'', exp, 0)  # Sem caracteres que não sejam +-*/.0123456789
+    formated = sub(r'([\.\+\-\*\/])\1+', r'\1', formated, 0)  # Sem repetições de símbolos não numéricos
+
+    return formated
+
+
+def segment_exp(exp: str) -> list[str]:
+    segmented_exp = ''
+    for char in exp:
+        if char.isdigit() or char == '.':
+            segmented_exp += char
+        else:
+            segmented_exp += f' {char} '
+
+    return segmented_exp.split()
+
+
 def process_exp(exp: list, operators: str) -> str:
     while any(o in operators for o in exp):  # enquanto houver algum operador do parâmetro operators na expressão
         for i in range(len(exp)):  # então percorra a expressão até encontrar o primeiro desses operadores
@@ -23,17 +41,10 @@ def process_exp(exp: list, operators: str) -> str:
     return ' '.join(exp)
 
 
-def validate_exp(exp: str) -> bool:
-    valid = sub(r'[^\d\.\+\-\*\/$]', r'', exp, 0)  # Sem caracteres que não sejam +-*/.0123456789
-    valid = sub(r'([^\.\+\-\*\/$])\1+', r'\1', valid, 0)  # Sem repetições de símbolos não numéricos
+expression = input('Expressão: ')
+expression = format_exp(expression)
+expression = segment_exp(expression)
 
-    # Se valid for igual a exp, exp está escrito em um formato correto pois não sofreu alterações
-    return valid == exp
-
-
-expresao = input('Expressão: ').split()
-if validate_exp(''.join(expresao)):
-    print(process_exp(expresao, '*/'))
-    print(process_exp(expresao, '+-'))
-else:
-    print('Digite apenas números e operadores(+, -, *, /)')
+print(''.join(expression))
+print(process_exp(expression, '*/'))
+print(process_exp(expression, '+-'))
