@@ -39,11 +39,17 @@ def replace_zero_sequence_hextet(ipv6: str) -> str:
         return hextets
 
     return ipv6
-    
 
-if __name__ == '__main__':
-    complete_ipv6 = input('Complete IPv6: ')
-    abb_ipv6 = remove_left_zeros(complete_ipv6)
+
+# Main function
+def ipv6abb(ipv6: str) -> str:
+    abb_ipv6 = remove_left_zeros(ipv6)
     abb_ipv6 = replace_zero_sequence_hextet(abb_ipv6)
 
-    print(f'Abbreviation -> {abb_ipv6}')
+    return abb_ipv6
+
+
+# Test
+if __name__ == '__main__':
+    complete_ipv6 = input('Complete IPv6: ')
+    print(f'Abbreviation -> {ipv6abb(complete_ipv6)}')

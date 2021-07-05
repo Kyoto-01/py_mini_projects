@@ -8,8 +8,8 @@ def add_left_zeros(ipv6: str) -> str:
 def add_missing_hextets(ipv6: str) -> str:
     hextets, two_double_points_index = segment_hextets(ipv6)
     zero_hextets = ['0000'] * (8 - len(hextets))
-
     hextets.insert(two_double_points_index, ':'.join(zero_hextets))
+
     return ':'.join(hextets)
 
 
@@ -22,9 +22,15 @@ def segment_hextets(ipv6: str) -> tuple:
     return hextets, two_double_points_index
 
 
-if __name__ == '__main__':
-    abbreviated_ipv6 = input('Abbreviated IPv6: ')
-    abbreviated_ipv6 = add_left_zeros(abbreviated_ipv6)
+# Main function
+def ipv6deabb(ipv6: str) -> str:
+    abbreviated_ipv6 = add_left_zeros(ipv6)
     abbreviated_ipv6 = add_missing_hextets(abbreviated_ipv6)
 
-    print(f'Complete -> {abbreviated_ipv6}')
+    return abbreviated_ipv6
+
+
+# Test
+if __name__ == '__main__':
+    abbreviated_ipv6 = input('Abbreviated IPv6: ')
+    print(f'Complete -> {ipv6deabb(abbreviated_ipv6)}')
