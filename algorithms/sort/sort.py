@@ -60,6 +60,28 @@ def quick_sort2(vet: list[int], imin: int = 0, imax: int = None):
 		vet[imin], vet[j] = vet[j], pivot
 		quick_sort2(vet, imin, j - 1)
 		quick_sort2(vet, j + 1, imax)
+		
+		
+def quick_sort3(vet: list[int], imin: int = 0, imax: int = None):
+    if imax is None:
+        imax = len(vet) - 1
+    
+    if imin < imax:
+        pivot = vet[(imin + imax) // 2]
+        i, j = imin, imax
+        
+        while i <= j:
+            while vet[i] < pivot:
+                i += 1
+            while vet[j] > pivot:
+                j -= 1
+            if i <= j:
+                if vet[i] > vet[j]:
+                    vet[i], vet[j] = vet[j], vet[i]
+                i += 1
+                j -= 1
+        quick_sort3(vet, imin, j)
+        quick_sort3(vet, i, imax)
 
 
 def merge_sort(vet: list[int]):
