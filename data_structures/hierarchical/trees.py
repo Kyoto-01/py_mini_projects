@@ -63,21 +63,16 @@ class BinarySearchTree(BinaryTree):
         
     def insert(self, data: object, root: 'Node' = ROOT):
         if root == ROOT:
-            root = self.root
-            
-        new_child = Node(data)
-        if not root:
-            self.root = new_child
-        elif data > root.data:
-            if not root.right_child:
-                root.right_child = new_child
-            else:
-                self.insert(data, root.right_child)
-        elif data < root.data:
-            if not root.left_child:
-                root.left_child = new_child
-            else:
-                self.insert(data, root.left_child)
+            self.root = self.insert(data, self.root)
+        else:
+            if root is None:
+                return Node(data)
+            if data < root.data:
+                root.left_child = self.insert(data, root.left_child)
+            if data > root.data:
+                root.right_child = self.insert(data, root.right_child)
+                
+        return root 
     
     def remove(self, key: object, root: 'Node' = ROOT):
         if root == ROOT:
