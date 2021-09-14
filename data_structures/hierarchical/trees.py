@@ -14,6 +14,8 @@ ROOT = 'root'
 
 class BinaryTree:
     
+    # TODO add method to count nodes in tree
+    
     def __init__(self, root: 'Node' = None):
         self.root = root
         
@@ -57,6 +59,8 @@ class BinaryTree:
             
             
 class BinarySearchTree(BinaryTree):
+    
+    # TODO add methods to find the min and the max childs 
     
     def __init__(self, root: 'Node' = None):
         super().__init__(root)
