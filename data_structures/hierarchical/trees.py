@@ -96,8 +96,17 @@ class BinarySearchTree(BinaryTree):
             root.right_child = self.remove(actual.data, root.right_child)
         return root
 
-    def search(self, key: object):
-        pass
+    def search(self, key: object, root: 'Node' = ROOT):
+        if root == ROOT:
+            root = self.root
+        if root is None:
+            return root
+        if key < root.data:
+            return self.search(key, root.left_child)
+        if key > root.data:
+            return self.search(key, root.right_child)
+        return root
+        
         
         
 if __name__ == '__main__':
@@ -119,6 +128,7 @@ if __name__ == '__main__':
     nums.in_order_nav()
     print()
 
+    # remove tests
     nums.remove(5)
     nums.in_order_nav()
     print()
@@ -126,4 +136,19 @@ if __name__ == '__main__':
     nums.remove(1)
     nums.in_order_nav()
     print()
+    
+    nums.remove(3)
+    nums.in_order_nav()
+    print()
+    
+    # search tests
+    print(nums.search(0))
+    print(nums.search(2))
+    print(nums.search(4))
+    print(nums.search(6))
+    
+    print(nums.search(5))
+    print(nums.search(1))
+    print(nums.search(3))
+    print(nums.search(100))
     
