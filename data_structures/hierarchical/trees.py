@@ -9,15 +9,16 @@ class Node:
         return str(self.data)
 
 
+ROOT = 'root'
+
+
 class BinaryTree:
-    
-    ROOT = 'root'
     
     def __init__(self, root: 'Node' = None):
         self.root = root
         
     def pre_order_nav(self, root: 'Node' = ROOT):
-        if root == self.ROOT:
+        if root == ROOT:
             root = self.root
         if root:
             print(root, end='; ')
@@ -25,7 +26,7 @@ class BinaryTree:
             self.pre_order_nav(root.right_child)
             
     def in_order_nav(self, root: 'Node' = ROOT):
-        if root == self.ROOT:
+        if root == ROOT:
             root = self.root
         if root:
             self.in_order_nav(root.left_child)
@@ -33,7 +34,7 @@ class BinaryTree:
             self.in_order_nav(root.right_child)
             
     def post_order_nav(self, root: 'Node' = ROOT):
-        if root == self.ROOT:
+        if root == ROOT:
             root = self.root
         if root:
             self.post_order_nav(root.left_child)
@@ -41,14 +42,14 @@ class BinaryTree:
             print(root, end='; ')
             
     def left_border_nav(self, root: 'Node' = ROOT):
-        if root == self.ROOT:
+        if root == ROOT:
             root = self.root
         while root:
             print(root)
             root = root.left_child
     
     def right_border_nav(self, root: 'Node' = ROOT):
-        if root == self.ROOT:
+        if root == ROOT:
             root = self.root
         while root:
             print(root)
@@ -60,8 +61,8 @@ class BinarySearchTree(BinaryTree):
     def __init__(self, root: 'Node' = None):
         super().__init__(root)
         
-    def insert(self, data: object, root: 'Node' = BinaryTree.ROOT):
-        if root == BinaryTree.ROOT:
+    def insert(self, data: object, root: 'Node' = ROOT):
+        if root == ROOT:
             root = self.root
             
         new_child = Node(data)
@@ -78,32 +79,56 @@ class BinarySearchTree(BinaryTree):
             else:
                 self.insert(data, root.left_child)
     
-    def remove(self, key: object):
-        pass
-    
+    def remove(self, key: object, root: 'Node' = ROOT):
+        if root == ROOT:
+            root = self.root
+        if root is None:
+            return root
+        if key < root.data:
+            root.left_child = self.remove(key, root.left_child)
+        elif key > root.data:
+            root.right_child = self.remove(key, root.right_child)
+        else:
+            if not root.left_child:
+                return root.right_child
+            if not root.right_child:
+                return root.left_child
+
+            actual = root.right_child
+            while actual.left_child:
+                actual = actual.left_child
+            root.data = actual.data
+            root.right_child = self.remove(actual.data, root.right_child)
+        return root
+
     def search(self, key: object):
         pass
         
         
 if __name__ == '__main__':
     
-    #         5
+    #         6
     #      2
     #   1     4
-    #0      3
+    # 0      3  5
         
     nums = BinarySearchTree()
-    nums.insert(5)
+    nums.insert(6)
     nums.insert(2)
     nums.insert(1)
     nums.insert(4)
     nums.insert(0)
     nums.insert(3)
-    
-    nums.pre_order_nav()
-    print()
+    nums.insert(5)
+
     nums.in_order_nav()
     print()
-    nums.post_order_nav()
+
+    nums.remove(5)
+    nums.in_order_nav()
+    print()
+
+    nums.remove(1)
+    nums.in_order_nav()
     print()
     
