@@ -28,12 +28,17 @@ class BinaryTree:
     def height(self, node: 'Node' = ROOT):
         if node == ROOT:
             node = self.root
-        if node is None:
+        if not node or (not node.left_child and not node.right_child):
             return 0
         left_height = 1 + self.height(node.left_child)
         right_height = 1 + self.height(node.right_child)
 
         return left_height if left_height > right_height else right_height
+        
+    def depth(self, node: 'Node', root: 'Node' = ROOT):
+        if root == ROOT:
+            root = self.root
+        
 
     def pre_order_nav(self, root: 'Node' = ROOT):
         if root == ROOT:
@@ -163,11 +168,15 @@ if __name__ == '__main__':
     nums.insert(0)
     nums.insert(3)
     nums.insert(5)
+    nums.insert(10)
+    nums.insert(7)
+    nums.insert(11)
 
     nums.in_order_nav()
     print(f'[{nums.count()} node(s)]')
     print(f'[min = {nums.min_child()}; max = {nums.max_child()}]')
     print(f'[height = {nums.height()}]')
+    print('!!!', nums.depth(200))
     print()
 
     # remove tests
