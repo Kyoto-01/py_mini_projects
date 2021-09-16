@@ -28,17 +28,42 @@ class BinaryTree:
     def height(self, node: 'Node' = ROOT):
         if node == ROOT:
             node = self.root
-        if not node or (not node.left_child and not node.right_child):
+        if (node is None) or (not node.left_child and not node.right_child):
             return 0
         left_height = 1 + self.height(node.left_child)
         right_height = 1 + self.height(node.right_child)
 
-        return left_height if left_height > right_height else right_height
+        return max(left_height, right_height)
         
-    def depth(self, node: 'Node', root: 'Node' = ROOT):
+    def depth(self, node: 'Node' = ROOT):
+        if node == ROOT:
+            node = self.root
+        if node is None:
+            return 0
+        return self.height() - self.height(node)
+
+    def data_height(self, data: object):
+        find = self.search(data)
+        if find:
+            return self.depth(find)
+
+    def data_depth(self, data: object):
+        find = self.search(data)
+        if find:
+            return self.depth(find)
+
+    def search(self, key: object, root: 'Node' = ROOT):
         if root == ROOT:
             root = self.root
-        
+        if root is None:
+            return None
+        if key == root.data:
+            return root
+        find = self.search(key, root.left_child)
+        if find is None:
+            find = self.search(key, root.right_child)
+
+        return find
 
     def pre_order_nav(self, root: 'Node' = ROOT):
         if root == ROOT:
@@ -149,16 +174,20 @@ class BinarySearchTree(BinaryTree):
 
         return root
         
-        
+
 if __name__ == '__main__':
-    
+    # * TESTS *
+
+    # ** initial tree: **
+    #
     #         6
-    #        /
-    #      2
-    #     / \
-    #   1    4
-    #  /    / \
-    # 0    3   5
+    #        / \
+    #      2    8
+    #     / \   /\
+    #   1    4 7  9
+    #  /    / \    \
+    # 0    3   5    10
+    #
         
     nums = BinarySearchTree()
     nums.insert(6)
@@ -168,55 +197,28 @@ if __name__ == '__main__':
     nums.insert(0)
     nums.insert(3)
     nums.insert(5)
-    nums.insert(10)
+    nums.insert(8)
     nums.insert(7)
-    nums.insert(11)
+    nums.insert(9)
+    nums.insert(10)
 
-    nums.in_order_nav()
-    print(f'[{nums.count()} node(s)]')
-    print(f'[min = {nums.min_child()}; max = {nums.max_child()}]')
-    print(f'[height = {nums.height()}]')
-    print('!!!', nums.depth(200))
-    print()
-
-    # remove tests
-    nums.remove(6)
-    nums.in_order_nav()
-    print(f'[{nums.count()} node(s)]')
-    print(f'[min = {nums.min_child()}; max = {nums.max_child()}]')
-    print(f'[height = {nums.height()}]')
-    print()
-
-    nums.remove(1)
-    nums.in_order_nav()
-    print(f'[{nums.count()} node(s)]')
-    print(f'[min = {nums.min_child()}; max = {nums.max_child()}]')
-    print(f'[height = {nums.height()}]')
-    print()
-
-    nums.remove(2)
-    nums.in_order_nav()
-    print(f'[{nums.count()} node(s)]')
-    print(f'[min = {nums.min_child()}; max = {nums.max_child()}]')
-    print(f'[height = {nums.height()}]')
-    print()
-
-    nums.remove(4)
-    nums.in_order_nav()
-    print(f'[{nums.count()} node(s)]')
-    print(f'[min = {nums.min_child()}; max = {nums.max_child()}]')
-    print(f'[height = {nums.height()}]')
-    print()
-
-    # search tests
-    #   find
-    print(nums.search(0))
-    print(nums.search(2))
-    print(nums.search(4))
-    print(nums.search(6))
-    #   not find
-    print(nums.search(5))
-    print(nums.search(1))
-    print(nums.search(3))
-    print(nums.search(100))
-    
+    # ** menu **
+    print('''*-- Options --*\n
+[NAVIGATION] [1]
+    --> pre-order (1)
+    --> in-order (2)
+    --> post-order (3)
+    --> left-border (4)
+    --> right-border (5)
+[OPERATIONS] [2]
+    --> insert (1)
+    --> remove (2)
+    --> search (3)
+[DATAS] [3]
+    --> min-child (1)
+    --> max-child (2)
+    --> count (3)
+    --> height (4)
+    --> data-height (5)
+    --> depth (6)
+    --> data-depth (7)''')
