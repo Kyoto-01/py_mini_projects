@@ -34,23 +34,19 @@ class BinaryTree:
         right_height = 1 + self.height(node.right_child)
 
         return max(left_height, right_height)
-        
-    def depth(self, node: 'Node' = ROOT):
-        if node == ROOT:
-            node = self.root
-        if node is None:
+
+    # TODO debug the method below
+    def depth(self, node: 'Node' = ROOT, root: 'Node' = ROOT, depth: int = 1):
+        if root == ROOT:
+            root = self.root
+        if (root is None) or (node == ROOT):
             return 0
-        return self.height() - self.height(node)
-
-    def data_height(self, data: object):
-        find = self.search(data)
-        if find:
-            return self.depth(find)
-
-    def data_depth(self, data: object):
-        find = self.search(data)
-        if find:
-            return self.depth(find)
+        if node is root:
+            return depth
+        depth = self.depth(node, root.left_child, depth + 1)
+        if depth == 0:
+            depth = self.depth(node, root.right_child, depth + 1)
+        return depth
 
     def search(self, key: object, root: 'Node' = ROOT):
         if root == ROOT:
@@ -65,29 +61,41 @@ class BinaryTree:
 
         return find
 
+    def __pre_order_nav(self, root: 'Node' = ROOT):
+        if root:
+            print(root, end='; ')
+            self.__pre_order_nav(root.left_child)
+            self.__pre_order_nav(root.right_child)
+            
+    def __in_order_nav(self, root: 'Node' = ROOT):
+        if root:
+            self.__in_order_nav(root.left_child)
+            print(root, end='; ')
+            self.__in_order_nav(root.right_child)
+            
+    def __post_order_nav(self, root: 'Node' = ROOT):
+        if root:
+            self.__post_order_nav(root.left_child)
+            self.__post_order_nav(root.right_child)
+            print(root, end='; ')
+            
     def pre_order_nav(self, root: 'Node' = ROOT):
         if root == ROOT:
             root = self.root
-        if root:
-            print(root, end='; ')
-            self.pre_order_nav(root.left_child)
-            self.pre_order_nav(root.right_child)
+        self.__pre_order_nav(root)
+        print()
             
     def in_order_nav(self, root: 'Node' = ROOT):
         if root == ROOT:
             root = self.root
-        if root:
-            self.in_order_nav(root.left_child)
-            print(root, end='; ')
-            self.in_order_nav(root.right_child)
+        self.__in_order_nav(root)
+        print()
             
     def post_order_nav(self, root: 'Node' = ROOT):
         if root == ROOT:
             root = self.root
-        if root:
-            self.post_order_nav(root.left_child)
-            self.post_order_nav(root.right_child)
-            print(root, end='; ')
+        self.__post_order_nav(root)
+        print()
             
     def left_border_nav(self, root: 'Node' = ROOT):
         if root == ROOT:
@@ -201,15 +209,17 @@ if __name__ == '__main__':
     nums.insert(7)
     nums.insert(9)
     nums.insert(10)
-
+    
     # ** menu **
-    print('''*-- Options --*\n
+    print('''*-- Options --*
+<----------------------------------------->
 [NAVIGATION] [1]
     --> pre-order (1)
     --> in-order (2)
     --> post-order (3)
     --> left-border (4)
     --> right-border (5)
+    --> formated-tree-print (6)
 [OPERATIONS] [2]
     --> insert (1)
     --> remove (2)
@@ -219,6 +229,63 @@ if __name__ == '__main__':
     --> max-child (2)
     --> count (3)
     --> height (4)
-    --> data-height (5)
-    --> depth (6)
-    --> data-depth (7)''')
+    --> depth (5)
+[SAIR] [x]
+<----------------------------------------->
+        Example:
+            option >> 1 2
+            (makes a in-order navigation)
+<----------------------------------------->\n''')
+
+    while True:
+    
+        try:
+            option = input('option >> ').split(maxsplit=1)
+            group, op = option[0], option[1]
+            
+        except IndexError:
+            if len(option) > 0:
+                if option[0] == 'x':
+                    print('exiting...')
+                    break
+            
+        else:
+            if group == '1':
+                if op == '1':
+                    nums.pre_order_nav()
+                elif op == '2':
+                    nums.in_order_nav()
+                elif op == '3':
+                    nums.post_order_nav()
+                elif op == '4':
+                    nums.left_border_nav()
+                elif op == '5':
+                    nums.right_border_nav()
+                elif op == '6':
+                    pass
+                
+            elif group == '2':
+                if op == '1':
+                    data = int(input('To insert -> '))
+                    nums.insert(data)
+                elif op == '2':
+                    data = int(input('To remove -> '))
+                    nums.remove(data)
+                elif op == '3':
+                    data = int(input('To search -> '))
+                    nums.search(data)
+                    
+            elif group == '3':
+                if op == '1':
+                    print(nums.min_child())
+                elif op == '2':
+                    print(nums.max_child())
+                elif op == '3':
+                    print(nums.count())
+                elif op == '4':
+                    data = int(input('Node ->'))
+                    print(nums.height(nums.search(data)))
+                elif op == '5':
+                    data = int(input('Node ->'))
+                    print(nums.depth(nums.search(data)))
+                    
