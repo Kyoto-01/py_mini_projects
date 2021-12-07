@@ -1,0 +1,4 @@
+CPU(s):                          4
+Thread(s) per núcleo:            2
+Núcleo(s) por soquete:           2
+Soquete(s):                      1
