@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# script para gerar uma determinada quantidade de
+# números(qtd) em um determinado range(max)
+
 qtd=$1	# number of lines
 max=$2	# max number to generate
 
