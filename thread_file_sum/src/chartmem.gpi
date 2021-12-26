@@ -1,0 +1,17 @@
+reset
+set encoding utf8
+set terminal svg size 640,480 background rgb 'white' font ',12'
+set output 'mem.svg'
+set key left Left reverse
+set tics out nomirror
+set datafile separator tab
+set style line 1 lc rgb '#00ff00'
+set xrange [-0.5:4.5]
+set yrange [0:]
+set title '{/=18:Bold Média de uso de memória em KB}'
+set ylabel 'KB'
+set style data histograms
+set style histogram errorbars gap 1 linewidth 1
+set style fill transparent solid 1 border lt -1
+plot 'mem.txt' using 2:3:xtic(1) linestyle 1 title 'RAM'
+

@@ -1,0 +1,21 @@
+reset
+set encoding utf8
+set terminal svg size 640,480 background rgb 'white' font ',12'
+set output 'times.svg'
+set key left Left reverse
+set tics out nomirror
+set datafile separator tab
+set style line 1 lc rgb '#0000ff'
+set style line 2 lc rgb '#ff0000'
+set style line 3 lc rgb '#ffff00'
+set xrange [-0.5:4.5]
+set yrange [0:]
+set title '{/=18:Bold Média do tempo de execução em segundos}'
+set ylabel 'segundos'
+set style data histograms
+set style histogram errorbars gap 1 linewidth 1
+set style fill transparent solid 1 border lt -1
+plot 'times.txt' using 2:3:xtic(1) linestyle 1 title 'real' ,\
+'times.txt' using 4:5:xtic(1) linestyle 2 title 'kernel',\
+'times.txt' using 6:7:xtic(1) linestyle 3 title 'user'
+
