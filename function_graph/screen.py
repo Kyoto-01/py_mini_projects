@@ -1,4 +1,4 @@
-from color import Color
+from termcolor import colored
 from math import floor
 
 
@@ -48,7 +48,7 @@ class MapPoint:
         self.__screen = screen
         self.__x = x
         self.__y = y
-        self.__fill_color = Color.get_color(fill_color, 'background')
+        self.__fill_color = fill_color
 
     @property
     def screen(self):
@@ -136,6 +136,9 @@ class CartesianMapPoint(MapPoint):
         y_map_mid = floor(self.screen.y_len / 2)
 
         self.x = floor(x_map_mid + self.x)
+
+        # subtrai de screen.y_len para inverter o gráfico, que por padrão
+        # é exibido ao contrário
         self.y = floor(self.screen.y_len - (y_map_mid + self.y))
 
 
@@ -232,11 +235,13 @@ class ScreenMap:
                 rendered_value = ''
 
                 if x:
-                    rendered_value = x.fill_color + self.__class__.DISPLAY_FILL
+                    rendered_value = colored(
+                        self.__class__.DISPLAY_FILL,
+                        color=x.fill_color,
+                        attrs=['reverse', 'blink'],
+                    )
                 else:
                     rendered_value = self.__render_void_point()
-
-                rendered_value += Color.RESET
 
                 yield rendered_value
 
@@ -249,10 +254,13 @@ class ScreenMap:
         rendered_value = ''
 
         if self.__default_color:
-            void_color = Color.get_color(self.__default_color, 'background')
-            rendered_value = void_color
-
-        rendered_value += self.__class__.DISPLAY_VOID
+            rendered_value = colored(
+                self.__class__.DISPLAY_VOID,
+                color=self.__default_color,
+                attrs=['reverse', 'blink']
+            )
+        else:
+            rendered_value = self.__class__.DISPLAY_VOID
 
         return rendered_value
 
@@ -261,8 +269,11 @@ if __name__ == '__main__':
 
     ''' Testando o módulo '''
 
+    import os
+    os.system('color')
+
     screen = ScreenMap(32, 32, 'blue')
-    color = 'RED'
+    color = 'red'
     draw = [
         CartesianMapPoint(screen, 2, 0, color),
         CartesianMapPoint(screen, 3, 0, color),

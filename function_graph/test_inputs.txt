@@ -1,0 +1,7 @@
+sqrt(abs((1/4)-((x+2)**2)+2)) -80 80 -50 50 .05 red green
+
+-tan(sqrt(abs(1-abs(x+(3/2)))))+2 -80 80 -50 50 .05 red green
+
+tan(x) -80 80 -50 50 .05 red green
+
+x**2 -80 80 -50 50 .05 red green
